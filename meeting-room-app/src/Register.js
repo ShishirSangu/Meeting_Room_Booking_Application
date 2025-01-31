@@ -13,10 +13,8 @@ const Register = () => {
     dob: "",
   });
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target;
-  //   setFormData({ ...formData, [name]: value });
-  // };
+  const [error, setError] = useState(""); // Store error message
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -29,10 +27,15 @@ const Register = () => {
     } else {
       setFormData({ ...formData, [name]: value });
     }
+
+    // Clear the error when user starts changing fields
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Reset error before request
+
     try {
       const response = await fetch("http://localhost:8000/api/register", {
         method: "POST",
@@ -42,14 +45,18 @@ const Register = () => {
         body: JSON.stringify(formData),
       });
 
+      const data = await response.json(); // Parse response JSON
+
       if (response.ok) {
         alert("Registration successful!");
-        navigate("/Login");
+        navigate("/login");
       } else {
-        alert("Registration failed.");
+        // Display error from backend
+        setError(data.message || "Registration failed! Check the details.");
       }
     } catch (error) {
       console.error("Error:", error);
+      setError("Something went wrong. Please try again later.");
     }
   };
 
@@ -81,6 +88,19 @@ const Register = () => {
           className={styles.register_input}
           required
         />
+        {/* Display error message if exists */}
+        {error && (
+          <p
+            style={{
+              color: "orange",
+              marginTop: "5px",
+              fontSize: "14px",
+              fontWeight: "bold",
+            }}
+          >
+            {error}
+          </p>
+        )}
 
         <p className={styles.register_p}>Name</p>
         <input
@@ -124,6 +144,7 @@ const Register = () => {
           className={styles.register_input}
           required
         />
+
         <button type="submit" className={styles.register_button}>
           Register
         </button>

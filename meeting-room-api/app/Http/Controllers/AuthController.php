@@ -10,36 +10,79 @@ use Illuminate\Support\Facades\Validator;
 class AuthController extends Controller
 {
     // Registration method
+    // public function register(Request $request)
+    // {
+    //     // Validate input fields
+    //     $validator = Validator::make($request->all(), [
+    //         'fullname' => 'required|string|max:255',
+    //         'role' => 'required|string',
+    //         'company_id' => 'required|string',
+    //         'email' => 'required|email|unique:users',
+    //         'password' => 'required|min:6',
+    //         'dob' => 'required|date'
+    //     ]);
+
+    //     // Return validation errors if any
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors()], 422);
+    //     }
+
+    //     // Create a new user record
+    //     $user = User::create([
+    //         'fullname' => $request->fullname,
+    //         'role' => $request->role,
+    //         'company_id' => $request->company_id,
+    //         'email' => $request->email,
+    //         'password' => Hash::make($request->password),
+    //         'dob' => $request->dob,
+    //     ]);
+
+    //     // Return success response after registration
+    //     return response()->json(['message' => 'User registered successfully!']);
+    // }
+
     public function register(Request $request)
-    {
-        // Validate input fields
-        $validator = Validator::make($request->all(), [
-            'fullname' => 'required|string|max:255',
-            'role' => 'required|string',
-            'company_id' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            'dob' => 'required|date'
-        ]);
+{
+    // Validate input fields
+    $validator = Validator::make($request->all(), [
+        'fullname' => 'required|string|max:255',
+        'role' => 'required|string',
+        'company_id' => 'required|string',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|min:6',
+        'dob' => 'required|date'
+    ]);
 
-        // Return validation errors if any
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        // Create a new user record
-        $user = User::create([
-            'fullname' => $request->fullname,
-            'role' => $request->role,
-            'company_id' => $request->company_id,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'dob' => $request->dob,
-        ]);
-
-        // Return success response after registration
-        return response()->json(['message' => 'User registered successfully!']);
+    // Return validation errors if any
+    if ($validator->fails()) {
+        return response()->json(['errors' => $validator->errors()], 422);
     }
+
+    // Check if another Admin exists with the same company_id prefix
+    if ($request->role === 'Admin') {
+        $companyPrefix = substr($request->company_id, 0, 5); // Get the first 5 characters
+        $existingAdmin = User::where('role', 'Admin')
+            ->whereRaw("LEFT(company_id, 5) = ?", [$companyPrefix])
+            ->exists();
+
+        if ($existingAdmin) {
+            return response()->json(['message' => 'Admin with this company ID prefix already exists. Contact support team.'], 400);
+        }
+    }
+
+    // Create a new user record
+    $user = User::create([
+        'fullname' => $request->fullname,
+        'role' => $request->role,
+        'company_id' => $request->company_id,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'dob' => $request->dob,
+    ]);
+
+    return response()->json(['message' => 'User registered successfully!']);
+}
+
 
     // Login method (without authentication)
     public function login(Request $request)
