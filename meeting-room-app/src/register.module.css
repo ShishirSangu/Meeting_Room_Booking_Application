@@ -1,0 +1,61 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.register_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-image: url("./assets/Background-Image.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.register_form {
+  background-color: dodgerblue;
+  padding: 4% 3%;
+  width: 450px;
+  border-radius: 30px;
+}
+
+.register_p {
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+.register_input {
+  padding: 10px;
+  font-size: 15px;
+  outline: none;
+  border: none;
+  border-radius: 30px;
+  width: 98%;
+}
+
+.register_select {
+  padding: 10px;
+  font-size: 15px;
+  outline: none;
+  border: none;
+  border-radius: 30px;
+  width: 98%;
+}
+
+.register_h2 {
+  text-align: center;
+  margin-top: 0;
+}
+
+.register_button {
+  width: 48%;
+  margin-top: 30px;
+  padding: 10px;
+  font-size: 17px;
+  border-radius: 30px;
+  border: none;
+  margin-right: 1%;
+}

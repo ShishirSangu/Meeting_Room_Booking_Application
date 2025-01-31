@@ -1,0 +1,78 @@
+            <div>
+              <h3>
+                {isUpdate ? "Update Booking" : "Book Room"}: {selectedRoom.name}
+              </h3>
+              <form onSubmit={handleBookingSubmit}>
+                {/* Only show name and email if the role is not Employee */}
+                {role !== "Employee" && (
+                  <>
+                    <div>
+                      <label>Person Name</label>
+                      <input
+                        type="text"
+                        value={personName}
+                        onChange={(e) => setPersonName(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label>Person Email</label>
+                      <input
+                        type="email"
+                        value={personEmail}
+                        onChange={(e) => setPersonEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                  </>
+                )}
+                <div>
+                  <label>Date</label>
+                  <input
+                    type="date"
+                    // value={date}
+                    // onChange={(e) => setDate(e.target.value)}
+                    value={filter.date}
+                    onChange={(e) =>
+                      setFilter({ ...filter, date: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div>
+                  <label>Meeting Start Time</label>
+                  <input
+                    type="time"
+                    // value={startTime}
+                    // onChange={(e) => {
+                    //   const timeWithSeconds = `${e.target.value}:00`;
+                    //   setStartTime(timeWithSeconds);
+                    // }}
+                    value={filter.startTime}
+                    onChange={(e) =>
+                      setFilter({ ...filter, startTime: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div>
+                  <label>Meeting End Time</label>
+                  <input
+                    type="time"
+                    // value={endTime}
+                    // onChange={(e) => {
+                    //   const timeWithSeconds = `${e.target.value}:00`;
+                    //   setEndTime(timeWithSeconds);
+                    // }}
+                    value={filter.endTime}
+                    onChange={(e) =>
+                      setFilter({ ...filter, endTime: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <button type="submit">
+                  {isUpdate ? "Update Booking" : "Book Room"}
+                </button>
+              </form>
+            </div>
