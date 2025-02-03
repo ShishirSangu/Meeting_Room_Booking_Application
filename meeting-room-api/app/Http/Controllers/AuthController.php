@@ -66,7 +66,7 @@ class AuthController extends Controller
             ->exists();
 
         if ($existingAdmin) {
-            return response()->json(['message' => 'Admin with this company ID prefix already exists. Contact support team.'], 400);
+            return response()->json(['message' => 'Admin with this company ID already exists. Contact support team.'], 400);
         }
     }
 

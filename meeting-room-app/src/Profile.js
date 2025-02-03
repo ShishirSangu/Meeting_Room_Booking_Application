@@ -110,10 +110,14 @@ function Profile() {
             <strong>Role: </strong>
             {user.role}
           </p>
-          <p>
-            <strong>Status: </strong>
-            {user.status}
-          </p>
+
+          {user.role !== "Admin" && (
+            <p>
+              <strong>Status: </strong>
+              {user.status}
+            </p>
+          )}
+
           <p>
             <strong>Company ID: </strong>
             {user.company_id}
